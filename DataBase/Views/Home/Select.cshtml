@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Select";
+    Layout = null;
+}
+
+
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        table.gridtable {
+            font-family: verdana,arial,sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+
+            table.gridtable th {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #dedede;
+            }
+
+            table.gridtable td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+            }
+
+        textarea {
+            width:100%;
+            height:180px;   
+            margin:0px 0px 5px 0px;     
+        }
+        div#result {
+            overflow:auto;
+            /*height:500px;*/
+            margin:10px 0;
+        }
+    </style> 
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        $(function () {
+            changeHeight();
+            $(window).resize(changeHeight);
+
+            $("#search").bind("click", select); 
+        })
+
+        function changeHeight() {
+            var pageHeight = $(window).height();
+            $("#result").height(pageHeight - 243);
+        }
+  
+    function select() {
+        var sql = $("#sql").val();
+        if (sql) {
+            $.ajax({
+                url: "@Url.Action("SelectTable","Home")",
+                data: "sql=" + sql + "&dbName=@(ViewBag.dbName)&connectionStringName=@(ViewBag.Conn)",
+                type: "post",
+                success: function (data) {
+                    $("#result").html(data);
+                }
+            })
+        }
+    }
+    </script>
+</head>
+<body>
+    <div>       
+        <form method="post" action="@Url.Action("ExportTable","Home")" enctype="multipart/form-data">
+            <textarea id="sql" name="sql">@Html.Raw(ViewBag.SQL)</textarea> 
+            <input type="hidden" name="dbName"  value="@Html.Raw(ViewBag.dbName)" />
+            <input type="hidden" name="connectionStringName" value="@Html.Raw(ViewBag.Conn)" />   
+            <input type="button" id="search" value="查询" />          
+            <input type="submit" value="导出Excel" />
+        </form>         
+    </div> 
+    <div id="result"></div>
+</body>
+</html>
+

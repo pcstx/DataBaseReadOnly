@@ -1,0 +1,145 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Grid</title>
+    <link href="~/Scripts/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" />
+    <style>
+           body, html {
+            height: 100%;
+        }
+
+        body {
+            padding: 0px;
+            margin: 0;
+            overflow: hidden;
+        }
+        h4 {
+            height:21px;
+            line-height:21px;
+        }
+        #tableDescView {
+            width:100px;
+            height:15px; 
+            display:inline-block; 
+        }
+    </style>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/lib/ligerUI/js/ligerui.all.js"></script>    
+    <script type="text/javascript">
+    $(f_initGrid);
+    var manager, g;
+    var rowUrl = "@Url.Action("RowsGridJson","Home")"; // location.protocol + "//" + location.host + '/Home/RowsGridJson/';
+    function f_initGrid() {
+        g = manager = $("#maingrid").ligerGrid({
+            pageSize: 50, height: '100%',
+            columns: [
+            { display: '序号', name: 'id', width: 50, type: 'int', frozen: true },
+            {
+                display: '主键', name: 'primaryKey', width: 50,
+                render: function (rowdata, rowindex, value) {
+                    if (value == 1) return '√';
+                    return '';
+                }
+            },
+            { display: '列名', name: 'name', width: 100 },
+            { display: '数据类型', name: 'rowType', width: 100 },
+            { display: '类型长度', name: 'lenght', width: 100, type: 'int' },
+            {
+                display: '允许Null值', name: 'isNull', width: 70,
+                render: function (rowdata, rowindex, value) {
+                    if (value == 1) return '是';
+                    return '否';
+                }
+            },
+            { display: '默认值', name: 'defaultValue', width: 200 },
+            { display: '说明', name: 'note', editor: { type: 'text' } }
+            ],
+            onSelectRow: function (rowdata, rowindex) {
+                $("#txtrowindex").val(rowindex);
+            },
+            onEndEdit: function (editParm) {
+                postRow(editParm.record.name, editParm.value);
+            },
+            enabledEdit: true,
+            url: rowUrl + "/@(ViewBag.dbName)/@(ViewBag.TableName)?connectionStringName=@(ViewBag.ConnName)",
+            width: '100%'
+        });
+    }
+
+    function postRow(rowName, rowDesc) {
+        var data = "dbName=@(ViewBag.dbName)&tableName=@(ViewBag.TableName)&rowName=" + rowName + "&description=" + rowDesc + "&connectionStringName=@(ViewBag.ConnName)";
+        $.ajax({
+            type: "post",
+            data: data,
+            url: "/Home/EditRowDescription",
+            success: function (data) { 
+            }
+        })
+    }
+
+    function endAllEdit() {
+        manager.endEdit();
+    }
+
+    function deleteRow() {
+        manager.deleteSelectedRow();
+    }
+    var newrowid = 100;
+
+    function getSelected() {
+        var row = manager.getSelectedRow();
+        if (!row) { alert('请选择行'); return; }
+        alert(JSON.stringify(row));
+    }
+    function getData() {
+        var data = manager.getData();
+        alert(JSON.stringify(data));
+    }
+
+    function editTableDesc(desc)
+    {
+        var data = "dbName=@(ViewBag.dbName)&tableName=@(ViewBag.TableName)&description=" + desc + "&connectionStringName=@(ViewBag.ConnName)";
+        $.ajax({
+            type: "post",
+            data: data,
+            url: "/Home/EditTableDescription",
+            success: function (data) {
+            }
+        })
+    }
+        $(function () {
+            $("#tableDescView").unbind("click.rowsGrid").bind("click.rowsGrid", function () { 
+                $("#tableDescView").hide();
+                $("#tableDescTxt").show();
+                $('#tableDescTxt').focus().select();
+            });
+
+            $("#tableDescTxt").unbind("blur.rowsGrid").bind("blur.rowsGrid", function () {
+                var oldDesc = $("#tableDescView").html();
+                var newDesc = $("#tableDescTxt").val();
+                 
+                if (oldDesc != newDesc) {
+                    $("#tableDescView").html(newDesc);
+                    editTableDesc(newDesc);
+                }
+                $("#tableDescView").show();
+                $("#tableDescTxt").hide();
+            }); 
+        }) 
+    </script>
+
+</head>
+<body>
+    <div style="margin:5px;">
+        <h4>表名：@Html.Raw(ViewBag.TableName)</h4>
+        <h4>描述：<span id="tableDescView">@Html.Raw(ViewBag.Desc)</span><input type="text" style="display:none" id="tableDescTxt" value="@Html.Raw(ViewBag.Desc)" /></h4>
+    </div>
+    <div id="maingrid"></div>
+</body>
+</html>

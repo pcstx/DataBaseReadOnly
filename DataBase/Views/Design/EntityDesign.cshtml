@@ -1,0 +1,115 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EntityDesign</title>
+    <style>
+        * {
+            margin:0px;
+            padding:0px;
+            font-family: 微软雅黑, 宋体, Arial, sans-serif;
+        }
+        #select {
+            margin:5px;
+        }
+        textarea {
+            padding:0px 5px;
+            margin: 0px 5px; 
+        }
+    </style>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script> 
+    <script>
+        $(function () {
+            changeHeight();
+            $(window).resize(changeHeight);
+
+            function changeHeight() {
+                var pageHeight = $(window).height();
+                var pagewidth = $(window).width();
+                var selectHeight = $("#select").height();
+                $("#entityText").height(pageHeight - selectHeight - 20);
+                $("#entityText").width(pagewidth- 22);
+            } 
+            var data = decodeURIComponent("@(ViewBag.Data)");
+            entityObj.data = eval('(' + data + ')');
+            entityObj.init();  
+        })
+        var entityObj = entityObj || {};
+
+        (function ($) {
+            $.extend(entityObj, {
+                data: {}
+                , init: function () {
+                    $("input[type='radio']").unbind("change.entityObj").bind("change.entityObj", entityObj.selectNode);
+                    entityObj.selectNode();
+                }
+                , selectNode: function () {
+                    var checkValue = $('input:radio:checked').val();
+                    if (checkValue == "autoPropety") {
+                        $("#entityText").val(entityObj.createEntity(entityObj.autoPropety));
+                    }
+                    else if (checkValue == "field") {
+                        $("#entityText").val(entityObj.createEntity(entityObj.field));
+                    }
+                    else if (checkValue == "property") {
+                        $("#entityText").val(entityObj.createEntity(entityObj.property));
+                    }
+                }
+                , autoPropety: function () { 
+                    var html = "";
+                    for (var i in entityObj.data) {
+                        var item = entityObj.data[i];
+                        html += "     public " + item.rowType + " " + item.name + " { get; set; } \n";
+                    } 
+                    return html;
+                }
+                , field: function () {
+                    var html = "";
+                    for (var i in entityObj.data) {
+                        var item = entityObj.data[i];
+                        html += "     public " + item.rowType + " " + item.name + "; \n";
+                    }
+                    return html;
+                }
+                , property: function () {
+                    var html = "";
+                    for (var i in entityObj.data) {
+                        var item = entityObj.data[i];
+                        html += "     private " + item.rowType + " _" + item.name + "; \n";
+                        html += "     public " + item.rowType + " " + item.name + " { \n";
+                        html += "       get {  return _" + item.name + "; } \n";
+                        html += "       set {  _" + item.name + " = value; } \n";
+                        html += "     } \n\n";
+                    }
+                    return html;
+                }
+                , createEntity: function (fun) { 
+                    var tableName = $("#tableName").val();
+                    var filed = fun();
+                    var html = " public class "+tableName+" \n{ \n"
+                           + filed +
+                           " \n} "; 
+                    return html;
+                }
+            });
+        })(jQuery);
+    </script>
+</head>
+<body>
+    <div id="select">
+        <form>
+            代码风格：
+            <input type="radio" name="entity" checked value="autoPropety" id="autoPropety" /><label for="autoPropety">自动属性</label>
+            <input type="radio" name="entity" value="field" id="field" /><label for="field">字段</label>
+            <input type="radio" name="entity" value="property" id="property" /><label for="property">属性</label>
+            <input type="hidden" value="@(ViewBag.TableName)" id="tableName" />
+        </form>
+    </div> 
+    <textarea id="entityText"></textarea> 
+</body>
+</html>

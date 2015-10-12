@@ -1,0 +1,48 @@
+﻿@model   List<string>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>数据库查看</title>  
+    <link href="~/Scripts/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" />
+    <link href="~/Content/index.css" rel="stylesheet" /> 
+    <link href="~/Content/sider.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js?v=2015071301"></script> 
+    <script src="~/Scripts/lib/ligerUI/js/ligerui.all.js?v=2015071301"></script>    
+    <script src="~/Scripts/index/index_new.js?v=2015071302"></script>     
+</head>
+<body style="padding:0px;background:#EAEEF5;">
+    <div id="pageloading"></div>
+    <div id="topmenu" class="l-topmenu">
+        <div class="l-topmenu-logo">拼图软件数据库查询系统</div>
+        <div class="l-topmenu-welcome">
+            <a href="@Url.Action("RefreshCache", "Home")">刷新缓存</a>
+            <span class="space">|</span> 
+            <a href="http://www.chendaren.com" target="_blank" class="l-link2">关于陈大人</a>
+            @if (DataBase.Controllers.HomeController.haveLogout())
+            {
+                <span class="space">|</span>
+            <a href="@Url.Action("Logout","Home")">登出</a>
+            }
+        </div>
+    </div>
+    <div id="layout1" style="width:99.2%; margin:0 auto; margin-top:4px; ">
+      @Html.Action("Index", "Sider") 
+        <div position="center" id="framecenter">
+            <div tabid="home" title="使用说明" style="height:300px">
+                <iframe frameborder="0" name="home" id="home" src= "/Login/Info">
+                </iframe>
+            </div>
+        </div>
+
+    </div>
+    @*<div style="height:32px; line-height:32px; text-align:center;">
+        Copyright © 2013-@(DateTime.Today.Year+1) 拼图软件
+    </div>*@
+    <div style="display:none"></div>
+</body>
+</html>

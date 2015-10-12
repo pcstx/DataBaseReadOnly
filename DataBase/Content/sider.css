@@ -1,0 +1,75 @@
+﻿        body{
+			margin: 0px;
+			padding: 0px;
+		}
+
+        .siderTop {
+            margin:5px;
+        }
+
+		.siderTop select{
+			width: 100%;
+			height: 25px;
+		}
+		.siderTop .tableName{
+          margin: 5px 0px 0px 0px;
+          width: 98%;
+          height: 23px;
+          line-height: 23px;
+          border-width:1px;
+          border-style:solid;
+          border-color:silver #d9d9d9 #d9d9d9;
+          padding:0px 0px 0px 4px;
+		}
+
+		.siderView{
+			margin:5px 0px; 
+			width: 100%; 
+		}
+		.siderView div{		 
+			background-color: #ddd;
+			width: 32%;
+			height:20px;
+			line-height: 20px;
+			text-align: center;
+			border:1px solid #fff
+		}
+		.siderView a{
+			color: #000;
+			text-decoration:none;
+			font-weight: bold;
+			width: 100%; 
+            display:inline-block;
+		}
+
+        .siderView .selected{
+            background-color:#313e53; 
+        }
+
+        .selected a {
+             color:#fff;
+        }
+
+		.siderViewTable
+		{
+			float: left;
+			
+		}
+		.siderViewView{
+			float:left; 
+		}
+		.siderViewFunction{
+			float: left;
+		}
+        .treeView{
+			overflow: auto;		
+            width:100%; 
+		}
+.tableView {
+    overflow: auto;		
+            width:100%;
+}
+.procedure {
+    overflow: auto;		
+            width:100%;
+}
