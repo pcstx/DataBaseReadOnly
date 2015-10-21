@@ -24,7 +24,7 @@
             line-height:21px;
         }
         #tableDescView {
-            width:100px;
+            width:400px;
             height:15px; 
             display:inline-block; 
         }
@@ -139,6 +139,14 @@
     <div style="margin:5px;">
         <h4>表名：@Html.Raw(ViewBag.TableName)</h4>
         <h4>描述：<span id="tableDescView">@Html.Raw(ViewBag.Desc)</span><input type="text" style="display:none" id="tableDescTxt" value="@Html.Raw(ViewBag.Desc)" /></h4>
+    </div>
+    <div>
+        <form method="post" action="@Url.Action("ExportRows","Home")" enctype="multipart/form-data"> 
+            <input type="hidden" name="dbName" value="@Html.Raw(ViewBag.dbName)" />
+            <input type="hidden" name="tableName" value="@Html.Raw(ViewBag.TableName)" />
+            <input type="hidden" name="connectionStringName" value="@Html.Raw(ViewBag.ConnName)" /> 
+            <input type="submit" value="导出Excel" />
+        </form>          
     </div>
     <div id="maingrid"></div>
 </body>

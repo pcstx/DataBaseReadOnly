@@ -5,6 +5,7 @@ using System.Web;
 using Dapper;
 using DataBase.Models.ViewModels;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace DataBase.DataAccess
 {
@@ -174,6 +175,64 @@ namespace DataBase.DataAccess
             }
         }
 
+        public DataSet RowsExcel(string dbName, string TableName, string connectionStringName)
+        {
+            DataSet ds = new DataSet();
+            string rowSQL = @"  use {0} ;
+                                        SELECT  
+                                        C.column_id as '序号',
+                                        ISNULL(IDX.PrimaryKey,N'') as '主键',
+                                        C.name as '列名',                                        
+                                        T.name as '数据类型',
+                                        C.max_length as '数据长度',
+                                        C.is_nullable as '允许Null值',
+                                        ISNULL(D.definition,N'') as '默认值',
+                                        ISNULL(PFD.[value],N'') as '说明'
+                                        FROM [{0}].sys.columns C with(nolock)
+                                            INNER JOIN  [{0}].sys.objects O with(nolock)
+                                                ON C.[object_id]=O.[object_id] AND O.type='U' AND O.is_ms_shipped=0
+                                            INNER JOIN [{0}].sys.types T with(nolock)
+                                                ON C.user_type_id=T.user_type_id 
+                                            LEFT JOIN [{0}].sys.default_constraints D with(nolock)
+                                                ON C.[object_id]=D.parent_object_id AND C.column_id=D.parent_column_id AND C.default_object_id=D.[object_id]
+                                            LEFT JOIN [{0}].sys.extended_properties PFD with(nolock)
+                                                ON PFD.class=1 AND C.[object_id]=PFD.major_id AND C.column_id=PFD.minor_id
+                                            LEFT JOIN                       -- 索引及主键信息
+                                            (  SELECT IDXC.[object_id],IDXC.column_id,PrimaryKey=IDX.is_primary_key
+                                                FROM [{0}].sys.indexes IDX with(nolock)
+                                                INNER JOIN [{0}].sys.index_columns IDXC with(nolock)
+                                                    ON IDX.[object_id]=IDXC.[object_id] AND IDX.index_id=IDXC.index_id
+                                            ) IDX
+                                                ON C.[object_id]=IDX.[object_id] AND C.column_id=IDX.column_id 
+                                            WHERE O.name='{1}'  ";
+            dbName = dbName.Replace('\'', ' ');
+            rowSQL = string.Format(rowSQL, dbName, TableName);
+
+            using (SqlConnection conn = ConnectionString.GetConnection(connectionStringName) as SqlConnection)
+            {
+                try
+                {
+                    using (SqlDataAdapter dapter = new SqlDataAdapter(rowSQL, conn))
+                    {
+                        dapter.Fill(ds);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DataTable dt = new DataTable();
+                    DataColumn dc = new DataColumn("错误");
+                    dt.Columns.Add(dc);
+                    DataRow dr = dt.NewRow();
+                    dr[0] = ex.Message;
+                    dt.Rows.Add(dr);
+                    ds.Tables.Add(dt);
+                }
+                conn.Close();
+            }
+
+            return ds;
+        }
+         
         public string GetTableDescription(string dbName, string tableName, string connectionStringName)
         {
             string desc = "";

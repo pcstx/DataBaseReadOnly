@@ -43,7 +43,7 @@
     });
     tab = $("#framecenter").ligerGetTabManager();
     accordion = $("#accordion1").ligerGetAccordionManager();
-    $(".js-example-basic-single").select2();
+    $(".dbname").select2();
     $("#pageloading").hide();
 });
 var tab, menu,procedureMenu, actionNode, accordion, treeViewObj, treeTableObj, treeProcedureObj,tableNameChange=true;

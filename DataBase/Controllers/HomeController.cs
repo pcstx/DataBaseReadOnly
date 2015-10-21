@@ -253,6 +253,17 @@ namespace DataBase.Controllers
             return File(path, "application/ms-excel", "export.xls");
         }
 
+        [HttpPost]
+        public ActionResult ExportRows(string dbName,string tableName, string connectionStringName = "SqlServerHelper")
+        {
+            DataAccess.DatabaseViewAccess access = new DataAccess.DatabaseViewAccess();
+            var dy = access.RowsExcel(dbName,tableName, connectionStringName);
+            string path = Server.MapPath(@"~/App_Data/Export/export.xls");
+            bool result = ExcelExport.ExportExcelWithAspose(dy, path);
+
+            return File(path, "application/ms-excel", "export.xls");
+        }
+
         [LoginFilter]
         [HttpPost]
         public ActionResult EditRowDescription(string dbName, string tableName, string rowName, string description, string connectionStringName= "SqlServerHelper")
