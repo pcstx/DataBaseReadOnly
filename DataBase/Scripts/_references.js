@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="bootstrap.js" />
+/// <reference path="chosen/chosen.jquery.min.js" />
 /// <reference path="index/index.js" />
 /// <reference path="index/index_new.js" />
 /// <reference path="index/indexdata.js" />

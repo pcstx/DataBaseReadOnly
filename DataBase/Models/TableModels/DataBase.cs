@@ -9,6 +9,6 @@ namespace DataBase.Models.TableModels
     {
         public int id { get; set; }
         public string name { get; set; }
-        public DateTime createDate { get; set; } 
+        public DateTime createDate { get; set; }   
     }
 }
