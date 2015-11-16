@@ -1,4 +1,6 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="../content/bootstrap/js/bootstrap.js" />
+/// <reference path="../content/bootstrap/js/npm.js" />
 /// <reference path="bootstrap.js" />
 /// <reference path="chosen/chosen.jquery.min.js" />
 /// <reference path="index/index.js" />
