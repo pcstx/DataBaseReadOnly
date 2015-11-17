@@ -40,7 +40,7 @@ namespace DataBase.DataAccess
                      }
                      catch (Exception ex)
                      {
-                         DataTable dt = new DataTable();                         
+                         DataTable dt = new DataTable("结果");                         
                          DataColumn dc = new DataColumn("错误");
                          dt.Columns.Add(dc);
                          DataRow dr = dt.NewRow();
@@ -53,7 +53,7 @@ namespace DataBase.DataAccess
              }
              catch (Exception ex)
              {
-                 DataTable dt = new DataTable();
+                 DataTable dt = new DataTable("结果");
                  DataColumn dc = new DataColumn("错误");
                  dt.Columns.Add(dc);
                  DataRow dr = dt.NewRow();
@@ -69,7 +69,7 @@ namespace DataBase.DataAccess
             return ds;
         }
 
-        DataTable messageDT = new DataTable("InfoMessage");
+        DataTable messageDT = new DataTable("消息");
 
         private void Conn_InfoMessage(object sender, SqlInfoMessageEventArgs e)
         { 

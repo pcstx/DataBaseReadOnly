@@ -7,47 +7,9 @@
 
 <html>
 <head>
-    <title></title> 
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <style type="text/css">
-        table.gridtable {
-            font-family: verdana,arial,sans-serif;
-            font-size: 11px;
-            color: #333333;
-            border-width: 1px;
-            border-color: #666666;
-            border-collapse: collapse;
-        }
-
-            table.gridtable th {
-                border-width: 1px;
-                padding: 8px;
-                border-style: solid;
-                border-color: #666666;
-                background-color: #dedede;
-            }
-
-            table.gridtable td {
-                border-width: 1px;
-                padding: 8px;
-                border-style: solid;
-                border-color: #666666;
-                background-color: #ffffff;
-            }
-
-        textarea {
-            width:100%;
-            height:180px;   
-            margin:0px 0px 5px 0px;     
-        }
-        div#result {
-            overflow:auto;
-            /*height:500px;*/
-            margin:10px 0;
-        }
-    </style> 
+    <title></title>   
+    <link href="~/Content/select.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.10.2.min.js"></script> 
-    <script src="~/Scripts/bootstrap.min.js"></script>
     <script>
         $(function () {
             changeHeight();
@@ -59,6 +21,17 @@
             var pageHeight = $(window).height();
             $("#result").height(pageHeight - 243);
         }
+
+        function navTabs() {
+            $("#myTabs a").click(function (e) {
+                var tabPane = $(this).attr("data-pane");
+                $("#myTabs li").removeClass("active");
+                $(this).parent().addClass("active");
+                $(".tab-pane").hide();
+                $("#" + tabPane).show();
+                $(this).focus();
+            });
+        }
   
     function select() {
         var sql = $("#sql").val();
@@ -69,10 +42,7 @@
                 type: "post",
                 success: function (data) {
                     $("#result").html(data);
-                    $('#myTabs a').click(function (e) {
-                        e.preventDefault()
-                        $(this).tab('show')
-                    });
+                    navTabs();
                 }
             })
         }

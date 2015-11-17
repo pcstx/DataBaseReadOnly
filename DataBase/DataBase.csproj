@@ -160,6 +160,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\main-dev.css" />
+    <Content Include="Content\select.css" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\sider.css" />
     <Content Include="favicon.ico" />

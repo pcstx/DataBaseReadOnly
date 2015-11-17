@@ -4,21 +4,23 @@
     ViewBag.Title = "查询结果";
     Layout = null;
 }
-  
-<ul id="myTabs" class="nav nav-tabs" role="tablist">
-   @for (int i = 0; i < Model.Tables.Count; i++)
-   {
-       string tableName = Model.Tables[i].TableName;
-    <li role="presentation" class="active">
-        <a href="#@tableName" id="@(tableName)-tab" role="tab" data-toggle="tab" aria-controls="@(tableName)" aria-expanded="true">@tableName</a>
-    </li>
-   }
-</ul> 
+ <div id="myTabs">
+    <ul>
+        @for (int i = 0; i < Model.Tables.Count; i++)
+        {
+            string tableName = Model.Tables[i].TableName;
+            <li @(i==0?Html.Raw("class='active'") :Html.Raw(""))>
+                <a href="#@tableName" data-pane="@tableName">@tableName</a>
+            </li>
+        } 
+    </ul>
+</div>
+
 <div id="myTabContent" class="tab-content">
     @for (int i = 0; i < Model.Tables.Count; i++)
     {
         string tableName = Model.Tables[i].TableName;
-    <div role="tabpanel" class="tab-pane fade in active" id="@tableName" aria-labelledBy="@(tableName)-tab">
+    <div class="tab-pane @(i!=0?Html.Raw("hide"):Html.Raw("")) " id="@tableName">
         <table class="gridtable">
             @{
                 DataTable dt = Model.Tables[i];

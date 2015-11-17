@@ -87,7 +87,7 @@ namespace DataBase
                     li.SetLicense(s);
 
                     Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook();
-
+                    workbook.Worksheets.Clear();
                     for (int tableCount = 0; tableCount < ds.Tables.Count; tableCount++)
                     {
                         workbook.Worksheets.Add(ds.Tables[tableCount].TableName);
