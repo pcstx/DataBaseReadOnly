@@ -23,8 +23,7 @@ namespace DataBase.DataAccess
                                      set statistics time on;");                
                 sqlSB.Append(sql);
                 sqlSB.Append(@" ;set statistics time off; 
-                                    set statistics io off; ");
-               // sql = " use [" + dbName + "]; set rowcount 100; " + sql;
+                                    set statistics io off; "); 
                  using (SqlConnection conn = ConnectionString.GetConnection(connName,2) as SqlConnection)
                  {
                      try

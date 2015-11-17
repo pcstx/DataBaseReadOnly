@@ -271,7 +271,7 @@ namespace DataBase.Controllers
 
         public ActionResult Test()
         {
-            return PartialView();
+            return View();
         }
 
     }

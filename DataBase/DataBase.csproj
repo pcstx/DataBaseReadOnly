@@ -176,7 +176,6 @@
     <None Include="Resources\License.lic" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\chosen\chosen-sprite.png" />
-    <Content Include="Scripts\chosen\chosen.jquery.js" />
     <Content Include="Scripts\chosen\chosen.jquery.min.js" />
     <Content Include="Scripts\chosen\chosen.min.css" />
     <Content Include="Scripts\index\index.js" />
@@ -543,6 +542,7 @@
     <Content Include="Views\Design\EntityDesign.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\Info.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
