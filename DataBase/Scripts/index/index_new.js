@@ -43,7 +43,7 @@
     });
     tab = $("#framecenter").ligerGetTabManager();
     accordion = $("#accordion1").ligerGetAccordionManager();
-    $(".chosen-select").chosen({ width: "250px",search_contains: true, });
+    $(".chosen-select").chosen({ width: "250px", search_contains: true, no_results_text: "未找到数据库", });
     $("#pageloading").hide();
 });
 var tab, menu,procedureMenu, actionNode, accordion, treeViewObj, treeTableObj, treeProcedureObj,tableNameChange=true;
